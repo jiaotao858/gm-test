@@ -4,7 +4,7 @@ import os.path
 from selenium import webdriver
 from framework.logger import Logger
 
-logger = Logger(logger="Brow")
+logger = Logger(logger="BrowserEngine").getlog()
 
 
 class BrowserEngine(object):
@@ -24,15 +24,15 @@ class BrowserEngine(object):
 
         browser = config.get('browserType', 'browserName')
         logger.info("You had select %s browser." % browser)
-        url = config.get('testServer', 'admin_URL')
+        url = config.get('testServer', 'URL')
         logger.info("The test server url is: %s" % url)
 
         if browser == "firefox":
             driver = webdriver.Firefox()
-            logger.error("Starting firefox browser.")
+            logger.info("Starting firefox browser.")
         elif browser == "Chrome":
             driver = webdriver.Chrome(self.chrome_driver_path)
-            logger.error("Starting Chrome browser.")
+            logger.info("Starting Chrome browser.")
         elif browser == "IE":
             driver = webdriver.Ie(self.ie_driver_path)
             logger.info("Starting IE browser.")
@@ -48,3 +48,6 @@ class BrowserEngine(object):
     def quit_browser(self):
         logger.info("Now,Close and quit the browser.")
         self.driver.quit()
+
+
+

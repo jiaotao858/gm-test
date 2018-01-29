@@ -14,10 +14,10 @@ class Logger(object):
         """
         # 创建一个logger
         self.logger = logging.getLogger(logger)
-        self.logger.setLevel(logger.DEBUG)
+        self.logger.setLevel(logging.DEBUG)
 
         # 创建一个handler，用于写入日志文件
-        rq = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
+        rq = time.strftime('%Y%m%d', time.localtime(time.time()))
         # log_path = os.path.dirname(os.getcwd() + '/logs/')
         log_path = os.path.dirname(os.path.abspath('.')) + '/logs/'
 
@@ -30,13 +30,16 @@ class Logger(object):
         ch.setLevel(logging.INFO)
 
         # 定义handler的输出格式
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname) - %(message)s')
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         fh.setFormatter(formatter)
         ch.setFormatter(formatter)
 
         # 给logger添加handler
-        self.logger.addFilter(fh)
-        self.logger.addFilter(ch)
+        self.logger.addHandler(fh)
+        self.logger.addHandler(ch)
 
     def getlog(self):
         return self.logger
+
+
+
