@@ -1,11 +1,11 @@
-# -*- coding:utf-8 -*-
+# coding=utf-8
 import time
 import unittest
 from framework.browser_engine import BrowserEngine
+from pageobjects.baidu_homepage import HomePage
 
 
 class BaiduSearch(unittest.TestCase):
-
 
     def setUp(self):
         """
@@ -14,7 +14,6 @@ class BaiduSearch(unittest.TestCase):
         """
         browse = BrowserEngine(self)
         self.driver = browse.open_browser(self)
-
 
     def tearDown(self):
         """
@@ -28,16 +27,22 @@ class BaiduSearch(unittest.TestCase):
         这里一定要test开头，把测试逻辑代码封装到一个test开头的方法里。
         :return:
         """
-        self.driver.find_element_by_id('kw').send_keys('selenium')
+        homepage = HomePage(self.driver)
+        homepage.type_search('selenium')  # 调用页面对象中的方法
         time.sleep(2)
-        self.driver.find_element_by_id('su').click()
-        time.sleep(3)
+        # homepage.clear_search()
+        # time.sleep(5)
+        homepage.send_submit_btn()     #调用页面对象类中的点击搜索按钮方法
+        time.sleep(2)
+        homepage.get_windows_img()  # 调用基类截图方法
         try:
-            assert 'selenium' in self.driver.title
+            assert 'selenium' in homepage.get_page_title()  # 调用页面对象继承基类中的获取页面标题方法
             print ('Test Pass.')
         except Exception as e:
             print ('Test Fail.', format(e))
 
 if __name__ == '__main__':
     unittest.main()
+
+
 

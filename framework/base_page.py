@@ -2,6 +2,7 @@
 import time
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 import os.path
@@ -53,8 +54,8 @@ class BasePage(object):
 
     # 保存图片
     def get_windows_img(self):
-        file_path = os.path.dirname(os.path(".")) + '/screenshots/'
-        rq = time.strftime('%Y%m%d%H%M'),time.localtime(time.time())
+        file_path = os.path.dirname(os.path.abspath(".")) + '/screenshots/'
+        rq = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
         screen_name = file_path + rq + '.png'
         try:
             self.driver.get_screenshot_as_file(screen_name)
@@ -67,77 +68,78 @@ class BasePage(object):
     # 定位元素方法
     def find_element(self, selector):
         element = ''
-        if ',' not in selector:
-            return self.driver.find_elenent_by == 'id'
-        selector_by = selector.split(',')[0]
-        selector_value = selector.split(',')[1]
+        if '=' not in selector:
+            raise NameError("SyntaxError: invalid syntax, lack of '='.")
 
-        if selector_by == 'i' or selector_by == 'id':
+        selector_by = selector.split('=')[0]
+        selector_value = selector.split('=')[1]
+
+        if selector_by == 'id':
             try:
-                element = self.driver.find_element_by_id(selector_value)
+                element = self.driver.find_element(By.ID, selector_value)
                 logger.info("Had find the element \' %s \' successful " 
                             "by %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.info("NoSuchElementException: %s" %e)
                 self.get_windows_img()
 
-        elif selector_by == "n" or selector_by == 'name':
+        elif selector_by == 'name':
             try:
-                element = self.driver.find_element_by_name(selector_value)
+                element = self.driver.find_element(By.NAME, selector_value)
                 logger.info("Had find the element \' %s \' successful " 
                             "by %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.info("NoSuchElementException: %s" %e)
                 self.get_windows_img()
 
-        elif selector_by == "c" or selector_by == 'class_name':
+        elif selector_by == 'class_name':
             try:
-                element = self.driver.find_element_by_class_name(selector_value)
+                element = self.driver.find_element(By.CLASS_NAME, selector_value)
                 logger.info("Had find the element \' %s \' successful " 
                             "by %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.info("NoSuchElementException: %s" %e)
                 self.get_windows_img()
 
-        elif selector_by == "l" or selector_by == 'link_text':
+        elif selector_by == 'link_text':
             try:
-                element = self.driver.find_element_by_link_text(selector_value)
+                element = self.driver.find_element(By.LINK_TEXT,selector_value)
                 logger.info("Had find the element \' %s \' successful " 
                             "by %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.info("NoSuchElementException: %s" %e)
                 self.get_windows_img()
 
-        elif selector_by == "p" or selector_by == 'partial_link_text':
+        elif selector_by == 'partial_link_text':
             try:
-                element = self.driver.find_element_by_partial_link_text(selector_value)
+                element = self.driver.find_element(By.PARTIAL_LINK_TEXT, selector_value)
                 logger.info("Had find the element \' %s \' successful " 
                             "by %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.info("NoSuchElementException: %s" %e)
                 self.get_windows_img()
 
-        elif selector_by == "t" or selector_by == 'tag_name':
+        elif selector_by == 'tag_name':
             try:
-                element = self.driver.find_element_by_tag_name(selector_value)
+                element = self.driver.find_element(By.TAG_NAME, selector_value)
                 logger.info("Had find the element \' %s \' successful " 
                             "by %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.info("NoSuchElementException: %s" %e)
                 self.get_windows_img()
 
-        elif selector_by == "x" or selector_by == 'xpath':
+        elif selector_by == 'xpath':
             try:
-                element = self.driver.find_element_by_xpath(selector_value)
+                element = self.driver.find_element(By.XPATH, selector_value)
                 logger.info("Had find the element \' %s \' successful " 
                             "by %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.info("NoSuchElementException: %s" %e)
                 self.get_windows_img()
 
-        elif selector_by == "s" or selector_by == 'selector_selector':
+        elif selector_by == 'css_selector':
             try:
-                element = self.driver.find_element_by_css_selector(selector_value)
+                element = self.driver.find_element(By.CSS_SELECTOR, selector_value)
                 logger.info("Had find the element \' %s \' successful " 
                             "by %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
@@ -145,24 +147,46 @@ class BasePage(object):
                 self.get_windows_img()
 
         else:
-            raise NameError("Please enter a valid type of targeting elements.")
+            raise NameError("Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
 
-        return selector
+        return element
 
     # 等待元素出现
-    def wait_element(self, selector, seconds=5):
-        element = ''
-        if ',' not in selector:
-            return self.driver.find_elenent_by == 'id'
-        selector_by = selector.split(',')[0]
-        selector_value = selector.split(',')[1]
+    def wait_element(self, selector, seconds=10):
+        if '=' not in selector:
+            raise NameError("SyntaxError: invalid syntax, lack of '='.")
+
+        selector_by = selector.split('=')[0]
+        selector_value = selector.split('=')[1]
 
         if selector_by == "id":
-            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_all_elements_located)
-            
+            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.ID, selector_value)))
+        elif selector_by == "name":
+            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.NAME, selector_value)))
+        elif selector_by == "class_name":
+            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.CLASS_NAME, selector_value)))
+        elif selector_by == "link_text":
+            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.LINK_TEXT, selector_value)))
+        elif selector_by == "partial_link_text":
+            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, selector_value)))
+        elif selector_by == "tag_name":
+            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.TAG_NAME, selector_value)))
+        elif selector_by == "xpath":
+            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.XPATH, selector_value)))
+        elif selector_by == "css_selector":
+            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.CSS_SELECTOR, selector_value)))
+        else:
+            raise NameError("Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
+        # try:
+        #     WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_all_elements_located.find_element(selector))
+        # except Exception as e:
+        #     logger.error("Failed to wait element: %s" % e)
+        #     raise NameError("Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
+
     # 输入
     def type(self, selector, text):
 
+        self.wait_element(selector)
         el = self.find_element(selector)
         el.clear()
         try:
@@ -185,7 +209,7 @@ class BasePage(object):
 
     #点击元素
     def click(self,selector):
-
+        self.wait_element(selector)
         el = self.find_element(selector)
         try:
             el.click()
