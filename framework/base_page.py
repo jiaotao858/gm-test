@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import time
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException,TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -76,9 +76,10 @@ class BasePage(object):
 
         if selector_by == 'id':
             try:
-                element = self.driver.find_element(By.ID, selector_value)
+                element = self.driver.find_element_by_id(selector_value)
+                print(type(element))
                 logger.info("Had find the element \' %s \' successful " 
-                            "by %s via value: %s " % (element.text, selector_by, selector_value))
+                            "by: %s via value: %s " % (element.text, selector_by, selector_value))
             except NoSuchElementException as e:
                 logger.info("NoSuchElementException: %s" %e)
                 self.get_windows_img()
@@ -160,7 +161,11 @@ class BasePage(object):
         selector_value = selector.split('=')[1]
 
         if selector_by == "id":
-            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.ID, selector_value)))
+            try:
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.ID, selector_value)),
+                                                           '通过%s,Dom树中未查找到该元素' % selector_value)
+            except TimeoutException as e:
+                logger.info("TimeoutException: %s" % e)
         elif selector_by == "name":
             WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.NAME, selector_value)))
         elif selector_by == "class_name":
@@ -177,11 +182,6 @@ class BasePage(object):
             WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.CSS_SELECTOR, selector_value)))
         else:
             raise NameError("Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
-        # try:
-        #     WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_all_elements_located.find_element(selector))
-        # except Exception as e:
-        #     logger.error("Failed to wait element: %s" % e)
-        #     raise NameError("Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
 
     # 输入
     def type(self, selector, text):
@@ -199,6 +199,7 @@ class BasePage(object):
     # 清除文本框
     def clear(self, selector):
 
+        self.wait_element(selector)
         el = self.find_element(selector)
         try:
             el.clear()
@@ -209,6 +210,7 @@ class BasePage(object):
 
     #点击元素
     def click(self,selector):
+
         self.wait_element(selector)
         el = self.find_element(selector)
         try:
