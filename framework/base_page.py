@@ -56,7 +56,6 @@ class BasePage(object):
             logger.error("Failed to take screenshot! %s" % e)
             self.get_windows_img()
 
-
     # 定位元素方法
     def find_element(self, selector):
         pass
