@@ -166,20 +166,55 @@ class BasePage(object):
                                                            '通过%s,Dom树中未查找到该元素' % selector_value)
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
+
         elif selector_by == "name":
-            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.NAME, selector_value)))
+            try:
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.NAME, selector_value)),
+                                                           '通过%s,Dom树中未查找到该元素' % selector_value)
+            except TimeoutException as e:
+                logger.info("TimeoutException: %s" % e)
+
         elif selector_by == "class_name":
-            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.CLASS_NAME, selector_value)))
+            try:
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
+                    By.CLASS_NAME, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+            except TimeoutException as e:
+                logger.info("TimeoutException: %s" % e)
+
         elif selector_by == "link_text":
-            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.LINK_TEXT, selector_value)))
+            try:
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
+                    By.LINK_TEXT, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+            except TimeoutException as e:
+                logger.info("TimeoutException: %s" % e)
+
         elif selector_by == "partial_link_text":
-            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, selector_value)))
+            try:
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
+                    By.PARTIAL_LINK_TEXT, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+            except TimeoutException as e:
+                logger.info("TimeoutException: %s" % e)
+
         elif selector_by == "tag_name":
-            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.TAG_NAME, selector_value)))
+            try:
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
+                    By.TAG_NAME, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+            except TimeoutException as e:
+                logger.info("TimeoutException: %s" % e)
+
         elif selector_by == "xpath":
-            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.XPATH, selector_value)))
+            try:
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
+                    By.XPATH, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+            except TimeoutException as e:
+                logger.info("TimeoutException: %s" % e)
+
         elif selector_by == "css_selector":
-            WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.CSS_SELECTOR, selector_value)))
+            try:
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
+                    By.CSS_SELECTOR, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+            except TimeoutException as e:
+                logger.info("TimeoutException: %s" % e)
         else:
             raise NameError("Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
 

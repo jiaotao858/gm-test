@@ -7,7 +7,7 @@ class HomePage(BasePage):
     input_box = "id=kw"
     # search_submit_btn = "xpath=//*[@id='su']"
     search_submit_btn = "xpath=//*[@id='u1']/a[1]"
-    us = "id=loginIdsss"
+    us = "id=loginId"
     ps = "id=password"
     lg = "id=loginBtn"
     #
