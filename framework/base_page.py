@@ -516,33 +516,5 @@ class BasePage(object):
         logger.info("Sleep for %d seconds" % seconds)
 
 
-if __name__ == '__main__':
-    # from Jzps import Jzps
-    driver = BasePage("chrome")               # 调用浏览器，支持 'firefox', 'chrome', 'ie' or 'phantomjs'
-    driver.get("http://www.baidu.com")
-    driver.find_element("id=kw")          # 通过id定位，支持'id','name','class','text','xpaht','css'
-    driver.set_window_size(1366,768)       # 设置窗口尺寸
-    time.sleep(2)
-    driver.max_window()                    # 浏览器最大化
-    driver.send_keys("id=kw",u"Johnny'lab")  # 该元素位置输入内容
-    time.sleep(2)
-    driver.click("id=su")
-    time.sleep(2)
-    driver.click("id=result_logo")      # 点击元素
-    time.sleep(2)
-    driver.F5()                            # 刷新页面
-    driver.get_window_img()  # 截图
-    time.sleep(2)
-    driver.right_click("text=登录")      # 鼠标右击
-    print (driver.get_url())
-    print (driver.get_text("name=tj_trnuomi"))
-    driver.move_to_element("id=su")
-    print (driver.get_title())
-    driver.open_new_window("name=tj_trnuomi")
-    driver.back()                         # 后退
-    time.sleep(2)
-    driver.forward()                      # 前进
-    driver.close()
-
 
 
