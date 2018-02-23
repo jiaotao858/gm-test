@@ -10,17 +10,8 @@ class HomePage(BasePage):
     us = "id=loginId"
     ps = "id=password"
     lg = "id=loginBtn"
-    #
-    # def type_search(self, text):
-    #     self.type(self.input_box, text)
-    #
-    # def send_submit_btn(self):
-    #     self.click(self.search_submit_btn)
-    #
-    # def clear_search(self):
-    #     self.clear(self.input_box)
 
     def login(self):
-        self.type(self.us,'guo')
-        self.type(self.ps,'ts123456')
+        self.send_keys(self.us,'guo')
+        self.send_keys(self.ps,'ts123456')
         self.click(self.lg)
