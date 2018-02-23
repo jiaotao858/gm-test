@@ -8,7 +8,7 @@ class HomePage(BasePage):
     # search_submit_btn = "xpath=//*[@id='su']"
     search_submit_btn = "xpath=//*[@id='u1']/a[1]"
     us = "id=loginId"
-    ps = "id=password"
+    ps = "id=passwordsss"
     lg = "id=loginBtn"
     #
     # def type_search(self, text):
@@ -21,6 +21,6 @@ class HomePage(BasePage):
     #     self.clear(self.input_box)
 
     def login(self):
-        self.type(self.us,'guo')
-        self.type(self.ps,'ts123456')
+        self.type(self.us, 'guo')
+        self.type(self.ps, 'ts123456')
         self.click(self.lg)

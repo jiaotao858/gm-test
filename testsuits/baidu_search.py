@@ -22,7 +22,7 @@ class BaiduSearch(unittest.TestCase):
         """
         self.driver.quit()
 
-    def test_baidu_search(self):
+    def test_search(self):
         """
         这里一定要test开头，把测试逻辑代码封装到一个test开头的方法里。
         :return:
@@ -38,9 +38,9 @@ class BaiduSearch(unittest.TestCase):
         homepage.login()
         try:
             assert 'selenium' in homepage.get_page_title()  # 调用页面对象继承基类中的获取页面标题方法
-            print ('Test Pass.')
+            print('Test Pass.')
         except Exception as e:
-            print ('Test Fail.', format(e))
+            print('Test Fail.', format(e))
 
 if __name__ == '__main__':
     unittest.main()
