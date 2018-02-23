@@ -5,6 +5,7 @@ from selenium.common.exceptions import NoSuchElementException,TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 import os.path
 from framework.logger import Logger
 
@@ -19,41 +20,53 @@ class BasePage(object):
     def __init__(self, driver):
         self.driver = driver
 
-    # 退出浏览器并结束用例
-    def quit_browser(self):
-        self.driver.quit()
-        logger.info("Quit browser and end testing.")
+    def get(self, url):
+        """
+        Open url,same as get.
 
-    # 浏览器前进操作
-    def forward(self):
-        self.driver.forward()
-        logger.info("Click forword on current page.")
+        Usage:
+        driver.get("https://www.baidu.com")
+        """
+        self.driver.get(url)
+        logger.info("Open url:%s" % url)
 
-    # 浏览器后退操作
-    def back(self):
-        self.driver.back()
-        logger.info("Click back on current page.")
+    def max_window(self):
+        """
+        Set browser window maximized.
 
-    # 隐式等待
+        Usage:
+        driver.max_window()
+        """
+        self.driver.maximize_window()
+        logger.info("Set browser window maximized.")
+
     def wait(self, seconds):
+        """
+        Implicitly wait.All elements on the page.
+
+        Usage:
+        driver.wait(10)
+        """
         self.driver.implicitly_wait(seconds)
         logger.info("wait for %d seconds." % seconds)
 
-    # 设置浏览器尺寸
     def set_window_size(self, wide, high):
+        """
+        Set browser window wide and high.
+        
+        Usage:
+        driver.set_window_size(100, 250)
+        """
         self.driver.set_window_size(wide, high)
         logger.info("Set browser window wind:%d high:%d" %(wide, high))
 
-    # 点击关闭当前窗口
-    def close(self):
-        try:
-            self.driver.close()
-            logger.info("Close and quit the browser.")
-        except NameError as e:
-            logger.error("Failed to quit the browser with %s." % e)
-
-    # 保存图片
     def get_windows_img(self):
+        """
+        Get the current window screenshot.
+
+        Usage:
+        driver.get_windows_img()
+        """
         file_path = os.path.dirname(os.path.abspath(".")) + '/screenshots/'
         rq = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
         screen_name = file_path + rq + '.png'
@@ -64,165 +77,113 @@ class BasePage(object):
             logger.error("Failed to take screenshot! %s" % e)
             self.get_windows_img()
 
-
     # 定位元素方法
-    def find_element(self, selector):
-        element = ''
-        if '=' not in selector:
+    def find_element(self, element):
+        """
+           Judge element positioning way, and returns the element.
+
+           Usage:
+           driver.find_element("id=kw")
+        """
+        if '=' not in element:
             raise NameError("SyntaxError: invalid syntax, lack of '='.")
 
-        selector_by = selector.split('=')[0]
-        selector_value = selector.split('=')[1]
+        by = element.split('=')[0]
+        value = element.split('=')[1]
 
-        if selector_by == 'id':
-            try:
-                element = self.driver.find_element_by_id(selector_value)
-                print(type(element))
-                logger.info("Had find the element \' %s \' successful " 
-                            "by: %s via value: %s " % (element.text, selector_by, selector_value))
-            except NoSuchElementException as e:
-                logger.info("NoSuchElementException: %s" %e)
-                self.get_windows_img()
-
-        elif selector_by == 'name':
-            try:
-                element = self.driver.find_element(By.NAME, selector_value)
-                logger.info("Had find the element \' %s \' successful " 
-                            "by %s via value: %s " % (element.text, selector_by, selector_value))
-            except NoSuchElementException as e:
-                logger.info("NoSuchElementException: %s" %e)
-                self.get_windows_img()
-
-        elif selector_by == 'class_name':
-            try:
-                element = self.driver.find_element(By.CLASS_NAME, selector_value)
-                logger.info("Had find the element \' %s \' successful " 
-                            "by %s via value: %s " % (element.text, selector_by, selector_value))
-            except NoSuchElementException as e:
-                logger.info("NoSuchElementException: %s" %e)
-                self.get_windows_img()
-
-        elif selector_by == 'link_text':
-            try:
-                element = self.driver.find_element(By.LINK_TEXT,selector_value)
-                logger.info("Had find the element \' %s \' successful " 
-                            "by %s via value: %s " % (element.text, selector_by, selector_value))
-            except NoSuchElementException as e:
-                logger.info("NoSuchElementException: %s" %e)
-                self.get_windows_img()
-
-        elif selector_by == 'partial_link_text':
-            try:
-                element = self.driver.find_element(By.PARTIAL_LINK_TEXT, selector_value)
-                logger.info("Had find the element \' %s \' successful " 
-                            "by %s via value: %s " % (element.text, selector_by, selector_value))
-            except NoSuchElementException as e:
-                logger.info("NoSuchElementException: %s" %e)
-                self.get_windows_img()
-
-        elif selector_by == 'tag_name':
-            try:
-                element = self.driver.find_element(By.TAG_NAME, selector_value)
-                logger.info("Had find the element \' %s \' successful " 
-                            "by %s via value: %s " % (element.text, selector_by, selector_value))
-            except NoSuchElementException as e:
-                logger.info("NoSuchElementException: %s" %e)
-                self.get_windows_img()
-
-        elif selector_by == 'xpath':
-            try:
-                element = self.driver.find_element(By.XPATH, selector_value)
-                logger.info("Had find the element \' %s \' successful " 
-                            "by %s via value: %s " % (element.text, selector_by, selector_value))
-            except NoSuchElementException as e:
-                logger.info("NoSuchElementException: %s" %e)
-                self.get_windows_img()
-
-        elif selector_by == 'css_selector':
-            try:
-                element = self.driver.find_element(By.CSS_SELECTOR, selector_value)
-                logger.info("Had find the element \' %s \' successful " 
-                            "by %s via value: %s " % (element.text, selector_by, selector_value))
-            except NoSuchElementException as e:
-                logger.info("NoSuchElementException: %s" %e)
-                self.get_windows_img()
-
+        if by == 'id':
+            return self.driver.find_element_by_id(value)
+        elif by == 'name':
+            return self.driver.find_element(By.NAME, value)
+        elif by == 'class_name':
+            return self.driver.find_element(By.CLASS_NAME, value)
+        elif by == 'link_text':
+            return self.driver.find_element(By.LINK_TEXT,value)
+        elif by == 'partial_link_text':
+            return self.driver.find_element(By.PARTIAL_LINK_TEXT, value)
+        elif by == 'tag_name':
+            return self.driver.find_element(By.TAG_NAME, value)
+        elif by == 'xpath':
+            return self.driver.find_element(By.XPATH, value)
+        elif by == 'css_selector':
+            return self.driver.find_element(By.CSS_SELECTOR, value)
         else:
             raise NameError("Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
-
-        return element
 
     # 等待元素出现
-    def wait_element(self, selector, seconds=10):
-        if '=' not in selector:
+    def wait_element(self, element, seconds=10):
+        """
+            Waiting for an element to display.
+
+            Usage:
+            driver.wait_element("id=kw",10)
+        """
+        if '=' not in element:
             raise NameError("SyntaxError: invalid syntax, lack of '='.")
 
-        selector_by = selector.split('=')[0]
-        selector_value = selector.split('=')[1]
+        by = element.split('=')[0]
+        value = element.split('=')[1]
 
-        if selector_by == "id":
+        if by == "id":
             try:
-                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.ID, selector_value)),
-                                                           '通过%s,Dom树中未查找到该元素' % selector_value)
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.ID, value)),
+                                                           '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
-
-        elif selector_by == "name":
+        elif by == "name":
             try:
-                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.NAME, selector_value)),
-                                                           '通过%s,Dom树中未查找到该元素' % selector_value)
+                WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((By.NAME, value)),
+                                                           '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
-
-        elif selector_by == "class_name":
+        elif by == "class_name":
             try:
                 WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
-                    By.CLASS_NAME, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+                    By.CLASS_NAME, value)),'通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
-
-        elif selector_by == "link_text":
+        elif by == "link_text":
             try:
                 WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
-                    By.LINK_TEXT, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+                    By.LINK_TEXT, value)),'通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
-
-        elif selector_by == "partial_link_text":
+        elif by == "partial_link_text":
             try:
                 WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
-                    By.PARTIAL_LINK_TEXT, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+                    By.PARTIAL_LINK_TEXT, value)),'通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
-
-        elif selector_by == "tag_name":
+        elif by == "tag_name":
             try:
                 WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
-                    By.TAG_NAME, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+                    By.TAG_NAME, value)),'通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
-
-        elif selector_by == "xpath":
+        elif by == "xpath":
             try:
                 WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
-                    By.XPATH, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+                    By.XPATH, value)),'通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
-
-        elif selector_by == "css_selector":
+        elif by == "css_selector":
             try:
                 WebDriverWait(self.driver,seconds,1).until(EC.presence_of_element_located((
-                    By.CSS_SELECTOR, selector_value)),'通过%s,Dom树中未查找到该元素' % selector_value)
+                    By.CSS_SELECTOR, value)),'通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
         else:
             raise NameError("Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
 
-    # 输入
-    def type(self, selector, text):
-
-        self.wait_element(selector)
-        el = self.find_element(selector)
+    def type(self, element, text):
+        """
+        Clear element and type text.
+        
+        Usage:
+        driver.type("class=right", "Hello World!")
+        """
+        self.wait_element(element)
+        el = self.find_element(element)
         el.clear()
         try:
             el.send_keys(text)
@@ -231,11 +192,15 @@ class BasePage(object):
             logger.error("Failed to type in input box with %s" % e)
             self.get_windows_img()
 
-    # 清除文本框
-    def clear(self, selector):
+    def clear(self, element):
+        """
+         Clear element value.
 
-        self.wait_element(selector)
-        el = self.find_element(selector)
+        Usage:
+        driver.clear("class=right")
+        """
+        self.wait_element(element)
+        el = self.find_element(element)
         try:
             el.clear()
             logger.info("Clear text in input box before typing.")
@@ -243,21 +208,248 @@ class BasePage(object):
             logger.error("Failed to clear in input box with %s" % e)
             self.get_windows_img()
 
-    #点击元素
-    def click(self,selector):
+    def click(self,element):
+        """
+        Click element.
 
-        self.wait_element(selector)
-        el = self.find_element(selector)
+        Usage:
+        driver.click("class=right")
+        """
+        self.wait_element(element)
+        el = self.find_element(element)
         try:
             el.click()
             logger.info("The element \' %s \' was clicked." % el.text)
         except NameError as e:
             logger.error("Failed to click the element with %s" % e)
 
-    # 获取网页标题
-    def get_page_title(self):
-        logger.info("Current page title is %s" % self.driver.title)
+    def right_click(self, element):
+        """
+        Right click element.
+
+        Usage:
+        driver.right_click("class=right")
+        """
+        self.wait_element(element)
+        ActionChains(self.driver).context_click(self.find_element(element)).perform()
+        logger.info("Right click element %s." % element)
+
+    def move_to_element(self, element):
+        """
+        Mouse over the element.
+
+        Usage:
+        driver.move_to_element("css=choose")
+        """
+        self.wait_element(element)
+        ActionChains(self.driver).move_to_element(self.find_element(element)).perform()
+        logger.info("Mouse over the element %s." % element)
+
+    def double_click(self, element):
+        """
+        Double click element.
+
+        Usage:
+        driver.double_click("name=baidu")
+        """
+        self.wait_element(element)
+        ActionChains(self.driver).double_click(self.find_element(element)).perform()
+        logger.info("Double click element %s." % element)
+
+    def drag_and_drop(self, source_element, target_element):
+        """
+        Drags an element a certain distance and then drops it.
+
+        Usage:
+        driver.drag_and_drop("id=s","id=t")
+        """
+        self.wait_element(source_element)
+        self.wait_element(target_element)
+        ActionChains(self.driver).drag_and_drop(self.find_element(source_element),
+                                                self.find_element(target_element)).perform()
+        logger.info("Drags an element from %s to %s." % (source_element, target_element))
+
+    def back(self):
+        """
+        Back to old window.
+
+        Usage:
+        driver.back()
+        """
+        self.driver.back()
+        logger.info("Back to old window.")
+
+    def forward(self):
+        """
+        Forward to old window.
+
+        Usage:
+        driver.forward()
+        """
+        self.driver.forward()
+        logger.info("Forward to old window.")
+
+    def get_attribute(self, element, attribute):
+        """
+        Gets the value of an element attribute.
+
+        Usage:
+        driver.get_attribute("id=kw","attribute")
+        """
+        logger.info("Gets the value of an element:%s attribute." % element)
+        self.wait_element(element)
+        return self.find_element(element).get_attribute(attribute)
+
+    def get_text(self, element):
+        """
+        Get element text information.
+
+        Usage:
+        driver.get_text("name=johnny")
+        """
+        logger.info("Get element:%s text information." % element)
+        self.wait_element(element)
+        return self.find_element(element).text
+
+    def get_display(self, element):
+        """
+        Gets the element to display,The return result is true or false.
+
+        Usage:
+        driver.get_display("id=ppp")
+        """
+        logger.info("Gets the element:%s to display" % element)
+        self.wait_element(element)
+        return self.find_element(element).is_displayed()
+
+    def get_title(self):
+        """
+        Get window title.
+
+        Usage:
+        driver.get_title()
+        """
+        logger.info("Get window title.")
         return self.driver.title
+
+    def get_url(self):
+        """
+        Get the URL address of the current page.
+
+        Usage:
+        driver.get_url()
+        """
+        logger.info("Get the URL address of the current page.")
+        return self.driver.current_url
+
+
+    def submit(self, element):
+        """
+        Submit the specified form.
+
+        Usage:
+        driver.submit("id=mainFrame")
+        """
+        self.wait_element(element)
+        self.find_element(element).submit()
+        logger.info("Submit the specified form.")
+
+    def switch_to_frame(self, element):
+        """
+        Switch to the specified frame.
+
+        Usage:
+        driver.switch_to_frame("id=mainFrame")
+        """
+        self.wait_element(element)
+        self.driver._switch_to_frame(self.find_element(element))
+        logger.info("Switch to the specified frame.")
+
+    def switch_to_frame_out(self):
+        """
+        Returns the current form machine form at the next higher level.
+        Corresponding relationship with switch_to_frame () method.
+
+        Usage:
+        driver.switch_to_frame_out()
+        """
+        self.driver.switch_to.default_content()
+        logger.info("Switch to the higher level frame.")
+
+    def open_new_window(self, element):
+        """
+        Open the new window and switch the handle to the newly opened window.
+
+        Usage:
+        driver.open_new_window(id=johnny)
+        """
+        current_windows = self.driver.current_window_handle
+        self.find_element(element).click()
+        all_handles = self.driver.window_handles
+        for handle in all_handles:
+            if handle != current_windows:
+                self.driver.switch_to.window(handle)
+        logger.info("Open the new window and switch the handle to the newly opened window.")
+
+    def F5(self):
+        '''
+        Refresh the current page.
+
+        Usage:
+        driver.F5()
+        '''
+        self.driver.refresh()
+        logger.info("Refresh the current page.")
+
+    def js(self, script):
+        """
+        Execute JavaScript scripts.
+
+        Usage:
+        driver.js("window.scrollTo(200,1000);")
+        """
+        self.driver.execute_script(script)
+        logger.info("Execute JavaScript scripts.")
+
+    def accept_alert(self):
+        """
+        Accept warning box.
+
+        Usage:
+        driver.accept_alert()
+        """
+        self.driver.switch_to.alert.accept()
+        logger.info("Accept warning box.")
+
+    def dismiss_alert(self):
+        """
+        Dismisses the alert available.
+
+        Usage:
+        driver.dismiss_alert()
+        """
+        self.driver.switch_to.alert.dismiss()
+        logger.info("Dismisses the alert available.")
+
+    def close(self):
+        """
+        Close the windows.
+
+        Usage:
+        driver.close()
+        """
+        self.driver.close()
+        logger.info("Close the windows.")
+
+    def quit(self):
+        """
+        Quit the driver and close all the windows.
+
+        Usage:
+        driver.quit()
+        """
+        self.driver.quit()
+        logger.info(" Quit the driver and close all the windows.")
 
     # 固定休眠
     @staticmethod
