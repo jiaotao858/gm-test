@@ -18,9 +18,10 @@ class BasePage(object):
     页面基本类
     """
 
-    def __init__(self, browser='Chrome'):
-        # self.driver = driver
-        self.driver = webdriver.Chrome()
+    def __init__(self, driver):
+        self.driver = driver
+    # def __init__(self, browser='Chrome'):
+    #     self.driver = webdriver.Chrome()
 
     # 打开网页
     def get(self, url):
@@ -134,49 +135,49 @@ class BasePage(object):
         if by == "id":
             try:
                 WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((By.ID, value)),
-                                                             '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
+                                                             '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
         elif by == "name":
             try:
                 WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((By.NAME, value)),
-                                                             '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
+                                                             '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
         elif by == "class_name":
             try:
                 WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
-                    By.CLASS_NAME, value)), '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
+                    By.CLASS_NAME, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
         elif by == "link_text":
             try:
                 WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
-                    By.LINK_TEXT, value)), '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
+                    By.LINK_TEXT, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
         elif by == "partial_link_text":
             try:
                 WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
-                    By.PARTIAL_LINK_TEXT, value)), '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
+                    By.PARTIAL_LINK_TEXT, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
         elif by == "tag_name":
             try:
                 WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
-                    By.TAG_NAME, value)), '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
+                    By.TAG_NAME, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
         elif by == "xpath":
             try:
                 WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
-                    By.XPATH, value)), '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
+                    By.XPATH, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
         elif by == "css_selector":
             try:
                 WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
-                    By.CSS_SELECTOR, value)), '通过%s 查找属性%s,Dom树中未查找到该元素' % (by, value))
+                    By.CSS_SELECTOR, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
             except TimeoutException as e:
                 logger.info("TimeoutException: %s" % e)
         else:
@@ -385,7 +386,7 @@ class BasePage(object):
         driver.switch_to_frame("id=mainFrame")
         """
         self.wait_element(element)
-        self.driver._switch_to_frame(self.find_element(element))
+        self.driver.switch_to.frame(self.find_element(element))
         logger.info("Switch to the specified frame.")
 
     # 跳出当前框架

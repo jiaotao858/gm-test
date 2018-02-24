@@ -1,6 +1,7 @@
 .idea
 /tools
 /screenshots
+/test_report
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
