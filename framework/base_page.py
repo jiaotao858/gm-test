@@ -198,7 +198,7 @@ class BasePage(object):
             el.send_keys(text)
             logger.info("Had type \'%s\' inputBox" % text)
         except NameError as e:
-            logger.error("Failed to type in input box with %s" % e)
+            logger.error("Failed to type inputBox with %s" % e)
             self.get_window_img()
 
     # 清空输入框
