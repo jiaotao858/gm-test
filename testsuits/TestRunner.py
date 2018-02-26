@@ -3,7 +3,8 @@ import HTMLTestRunner
 import os
 import time
 import unittest
-from testsuits.baidu_search import BaiduSearch
+# from testsuits.baidu_search import BaiduSearch
+from testsuits.hotel_testsuits import HotelLogin
 
 # 设置报告文件保存路径
 report_path = os.path.dirname(os.path.abspath('.'))+'/test_report/'
@@ -16,8 +17,9 @@ fp = open(HtmlFile, "wb")
 
 # 执行特定用例
 suite = unittest.TestSuite()
-suite.addTest(BaiduSearch('test_search'))
-suite.addTest(BaiduSearch('test_search2'))
+# suite.addTest(BaiduSearch('test_search'))
+# suite.addTest(BaiduSearch('test_search2'))
+suite.addTest(HotelLogin('test_checkLogin'))
 
 # 执行所有用例
 # suite = unittest.TestLoader().discover("testsuits")

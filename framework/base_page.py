@@ -32,6 +32,7 @@ class BasePage(object):
         driver.get("https://www.baidu.com")
         """
         self.driver.get(url)
+        self.driver.implicitly_wait(10)
         logger.info("Open url:%s" % url)
 
     # 浏览器最大化

@@ -24,8 +24,8 @@ class BrowserEngine(object):
 
         browser = config.get('browserType', 'browserName')
         logger.info("You had select %s browser." % browser)
-        url = config.get('testServer', 'URL')
-        logger.info("The test server url is: %s" % url)
+        # url = config.get('testServer', 'URL')
+        # logger.info("The test server url is: %s" % url)
 
         if browser == "firefox":
             driver = webdriver.Firefox()
@@ -37,8 +37,8 @@ class BrowserEngine(object):
             driver = webdriver.Ie(self.ie_driver_path)
             logger.info("Starting IE browser.")
 
-        driver.get(url)
-        logger.info("Open url : %s" % url)
+        # driver.get(url)
+        # logger.info("Open url : %s" % url)
         driver.maximize_window()
         logger.info("Maximize the current window.")
         driver.implicitly_wait(10)
