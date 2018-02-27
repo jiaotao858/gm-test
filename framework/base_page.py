@@ -184,6 +184,72 @@ class BasePage(object):
         else:
             raise NameError("Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
 
+    # 等待元素出现
+    def wait_element_text(self, element, text):
+        """
+            Waiting for an element to display.
+
+            Usage:
+            driver.wait_element("id=kw",10)
+        """
+        if '=' not in element:
+            raise NameError("SyntaxError: invalid syntax, lack of '='.")
+
+        by = element.split('=')[0]
+        value = element.split('=')[1]
+
+        if by == "xpath":
+            try:
+                WebDriverWait(self.driver, 10).until(EC.text_to_be_present_in_element((By.ID, value), text),
+                                                             '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
+            except TimeoutException as e:
+                logger.info("TimeoutException: %s" % e)
+            # elif by == "name":
+            #     try:
+            #         WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((By.NAME, value)),
+            #                                                      '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
+            #     except TimeoutException as e:
+            #         logger.info("TimeoutException: %s" % e)
+            # elif by == "class_name":
+            #     try:
+            #         WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
+            #             By.CLASS_NAME, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
+            #     except TimeoutException as e:
+            #         logger.info("TimeoutException: %s" % e)
+            # elif by == "link_text":
+            #     try:
+            #         WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
+            #             By.LINK_TEXT, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
+            #     except TimeoutException as e:
+            #         logger.info("TimeoutException: %s" % e)
+            # elif by == "partial_link_text":
+            #     try:
+            #         WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
+            #             By.PARTIAL_LINK_TEXT, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
+            #     except TimeoutException as e:
+            #         logger.info("TimeoutException: %s" % e)
+            # elif by == "tag_name":
+            #     try:
+            #         WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
+            #             By.TAG_NAME, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
+            #     except TimeoutException as e:
+            #         logger.info("TimeoutException: %s" % e)
+            # elif by == "xpath":
+            #     try:
+            #         WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
+            #             By.XPATH, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
+            #     except TimeoutException as e:
+            #         logger.info("TimeoutException: %s" % e)
+            # elif by == "css_selector":
+            #     try:
+            #         WebDriverWait(self.driver, seconds, 1).until(EC.presence_of_element_located((
+            #             By.CSS_SELECTOR, value)), '通过%s 查找属性%s失败,Dom树中未查找到该元素' % (by, value))
+            #     except TimeoutException as e:
+            #         logger.info("TimeoutException: %s" % e)
+        else:
+            raise NameError(
+    "Please enter the correct targeting elements,'id','name','class','text','xpaht','css'.")
+
     # 发送数值
     def send_keys(self, element, text):
         """
@@ -455,7 +521,7 @@ class BasePage(object):
         Refresh the current page.
 
         Usage:
-        driver.F5()y
+        driver.F5()
         """
         self.driver.refresh()
         logger.info("Refresh the current page.")

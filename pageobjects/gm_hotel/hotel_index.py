@@ -8,6 +8,7 @@ class IndexPage(BasePage):
     """
     wel_ass = "xpath=/html/body/div[2]/div/div/span[1]"  # 登录成功断言
     login_acc = "xpath=/html/body/div[2]/div/div/span[2]"    # 当前登录用户
+    jd = "xpath=/html/body/div[2]/div/ul/li[3]/a"
 
     # 验证登录是否成功
     def login_suss(self):
@@ -15,7 +16,8 @@ class IndexPage(BasePage):
 
     # 跳转至酒店列表页
     def goto_hotellist(self):
-        self.click("link_text=酒店")
+        self.click("link_text=旅游线路")
+        self.sleep(10)
 
 
 

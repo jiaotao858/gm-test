@@ -26,4 +26,3 @@ class LoginPage(BasePage):
         self.click(self.entry_btn)
 
 
-
