@@ -19,10 +19,10 @@ fp = open(HtmlFile, "wb")
 suite = unittest.TestSuite()
 # suite.addTest(BaiduSearch('test_search'))
 # suite.addTest(BaiduSearch('test_search2'))
-suite.addTest(HotelLogin('test_checkLogin'))
+# suite.addTest(HotelLogin('test_checkLogin'))
 
 # 执行所有用例
-# suite = unittest.TestLoader().discover("testsuits")
+suite = unittest.TestLoader().discover("testsuits")
 
 
 if __name__ == '__main__':
