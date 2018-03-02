@@ -4,6 +4,7 @@ from framework.browser_engine import BrowserEngine
 from pageobjects.gm_hotel.hotel_login import LoginPage
 from pageobjects.gm_hotel.hotel_index import IndexPage
 from pageobjects.gm_hotel.hotel_hotellist import HotelListPage
+from pageobjects.gm_hotel.hotel_order import FillOrderPage,OnlinePay,GoToAdmin
 
 class HotelLogin(unittest.TestCase):
 
@@ -27,12 +28,24 @@ class HotelLogin(unittest.TestCase):
     # 查询酒店
     def test_searchHotel(self):
         """验证酒店查询是否正确"""
-        self.driver.find_element_by_link_text("酒店").click()       # 跳转至酒店列表页
+        indexpage = IndexPage(self.driver)
+        indexpage.goto_hotellist()       # 跳转至酒店列表页
         hotellist = HotelListPage(self.driver)
         hotellist.search_hotel()
         self.assertEqual(hotellist.search_suss(), "唐山迪士尼")
-        hotellist.bookingRoom()
-        # self.driver.find_element_by_xpath("/html/body/div[3]/div/div/div/div/div[2]/div[1]/div[2]/div[11]/a").click()
+        hotellist.book_room()
+        fillorder = FillOrderPage(self.driver)
+        fillorder.fill_order()
+        fillorder.pay_style(1)
+        fillorder.submit_order()
+        onlinepage = OnlinePay(self.driver)
+        onlinepage.get_billno()
+        gotoadmin = GoToAdmin(self.driver)
+        gotoadmin.goto_admin()
+
+
+
+
 
 
 

@@ -12,15 +12,15 @@ class HotelListPage(BasePage):
     hotelName = "xpath=/html/body/div[3]/div/div/form/div/div[1]/input"     # 酒店名称
     searchButton = "xpath=/html/body/div[3]/div/div/form/div/div[1]/button"     # 搜索按钮
     searchResult = "xpath=/html/body/div[3]/div/div/div/div/div[1]/div[2]/h2/a"     # 酒店查询结果
-    bookingRoom = "/html/body/div[3]/div/div/div/div/div[2]/div[1]/div[2]/div[11]/a"    # 预订房间
+    bookingRoom = "xpath=/html/body/div[3]/div/div/div/div/div[2]/div[1]/div[2]/div[11]/a"    # 预订房间
 
     # 查询酒店
     def search_hotel(self):
         self.send_keys(self.destination, "唐山")
         self.js("document.getElementById('checkinDate').removeAttribute('readonly')")
-        self.send_keys(self.checkinTime, "2018-02-01")
+        self.send_keys(self.checkinTime, "2018-03-02")
         self.js("document.getElementById('checkoutDate').removeAttribute('readonly')")
-        self.send_keys(self.checkoutTime, "2018-02-03")
+        self.send_keys(self.checkoutTime, "2018-03-03")
         self.send_keys(self.hotelName, "唐山迪士尼")
         self.click(self.searchButton)
         self.sleep(2)
@@ -32,6 +32,8 @@ class HotelListPage(BasePage):
     # 预订房型
     def book_room(self):
         self.click(self.bookingRoom)
+        self.sleep(2)
+
 
 
 
