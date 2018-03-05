@@ -3,7 +3,6 @@ import HTMLTestRunner
 import os
 import time
 import unittest
-# from testsuits.baidu_search import BaiduSearch
 from testsuits.hotel_testsuits import HotelLogin
 
 # 设置报告文件保存路径
