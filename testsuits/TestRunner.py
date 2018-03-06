@@ -4,6 +4,7 @@ import os
 import time
 import unittest
 from testsuits.hotel_testsuits import HotelLogin
+from framework import again_execute
 
 # 设置报告文件保存路径
 report_path = os.path.dirname(os.path.abspath('.'))+'/test_report/'
@@ -15,17 +16,18 @@ HtmlFile = report_path + now + "HTMLtemplate.html"
 fp = open(HtmlFile, "wb")
 
 # 执行特定用例
-suite = unittest.TestSuite()
-# suite.addTest(BaiduSearch('test_search'))
-# suite.addTest(BaiduSearch('test_search2'))
+# suite = unittest.TestSuite()
+suit = again_execute.Suit()
+suit.addTest(HotelLogin('test_searchHotel'))
 # suite.addTest(HotelLogin('test_checkLogin'))
 
 # 执行所有用例
-suite = unittest.TestLoader().discover("testsuits")
+# suite = unittest.TestLoader().discover("testsuits")
 
 
 if __name__ == '__main__':
     runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title="测试项目报告", description="用例测试情况")
     # runner = unittest.TextTestRunner()
-    runner.run(suite)
+    runner.run(suit)
     fp.close()
+

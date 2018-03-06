@@ -1,8 +1,11 @@
 import unittest
+import time
+from unittest.suite import _isnotsuite
+
 
 class Suit(unittest.TestSuite):
     def run(self, result, debug=False):
-        failcount = 1  # 失败总运行次数
+        failcount = 3  # 失败总运行次数
         class_num = 1
         topLevel = False
         if getattr(result, '_testRunEntered', False) is False:
@@ -27,8 +30,7 @@ class Suit(unittest.TestSuite):
                         else:
                             time.sleep(5)
                             result._previousTestClass = None
-                            print
-                            '类%s第%s次重新初始化执行' % (test.__class__, class_num)
+                            print('类%s第%s次重新初始化执行' % (test.__class__, class_num))
                             class_num += 1
                         continue
 
@@ -41,8 +43,7 @@ class Suit(unittest.TestSuite):
                     if case_num > failcount:
                         success_flag = False
                     else:
-                        print
-                        '用例%s第%s次重新执行' % (test, case_num)
+                        print('用例%s第%s次重新执行' % (test, case_num))
                         case_num += 1
                 else:
                     success_flag = False
@@ -52,3 +53,19 @@ class Suit(unittest.TestSuite):
             self._handleModuleTearDown(result)
             result._testRunEntered = False
         return result
+
+
+# 单个用例自动重跑装饰器，使用方法 @retry(2)
+
+# def retry(times = 3):
+#     def retry_func(func):
+#         def _(*args, **kwds):
+#             for i in range(times):
+#                 try:
+#                     func(*args, **kwds)
+#                     return
+#                 except AssertionError:
+#                     pass
+#             raise AssertionError(func)
+#         return _
+#     return retry_func

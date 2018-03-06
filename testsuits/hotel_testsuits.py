@@ -32,16 +32,16 @@ class HotelLogin(unittest.TestCase):
         indexpage.goto_hotellist()       # 跳转至酒店列表页
         hotellist = HotelListPage(self.driver)
         hotellist.search_hotel()
-        self.assertEqual(hotellist.search_suss(), "唐山迪士尼")
+        self.assertEqual(hotellist.search_suss(), "唐山迪士尼111")
         hotellist.book_room()
-        fillorder = FillOrderPage(self.driver)
-        fillorder.fill_order()
-        fillorder.pay_style(1)
-        fillorder.submit_order()
-        onlinepage = OnlinePay(self.driver)
-        onlinepage.get_billno()
-        gotoadmin = GoToAdmin(self.driver)
-        gotoadmin.goto_admin()
+        # fillorder = FillOrderPage(self.driver)
+        # fillorder.fill_order()
+        # fillorder.pay_style(1)
+        # fillorder.submit_order()
+        # onlinepage = OnlinePay(self.driver)
+        # onlinepage.get_billno()
+        # gotoadmin = GoToAdmin(self.driver)
+        # gotoadmin.goto_admin()
 
 
 
