@@ -45,7 +45,7 @@ def send_email(newfile):
     smtpserver = 'smtp.163.com'
     # 发送邮箱用户名/密码
     user = 'jxjt_1990@163.com'
-    password = 'XXXXXXX'
+    password = 'Wohuai85849188'
     # 发送邮箱
     sender = 'jxjt_1990@163.com'
     # 多个接收邮箱，单个收件人的话，直接是receiver='XXX@126.com'
@@ -105,11 +105,16 @@ if __name__ == '__main__':
     # 不用绝对路径会报：ImportError: Start directory is not importable: './test_case'
     # test_dir = 'D:\\system files\\workspace\\selenium\\test_project\\test_case'
     dir = os.path.dirname(os.path.abspath('.'))
-    test_dir = dir + '/testsuits/hotel_testsuits/'
+    test_dir = dir + r'\testsuits'
+    # test_dir = r'C:\Users\allonshore\PycharmProjects\gm-test\testsuits'
     # 知道测试报告的路径
-    test_report_dir = os.path.dirname(os.path.abspath('.'))+'/test_report/'
+    # test_report_dir = os.path.dirname(os.path.abspath('.'))+'/test_report/'
+    test_report_dir = r'C:\Users\allonshore\PycharmProjects\gm-test\test_report'
 
-    discover = unittest.defaultTestLoader.discover(test_dir, pattern='test_*.py')
+    discover = unittest.defaultTestLoader.discover(test_dir, pattern='hotel_*.py')
+    # suite = unittest.TestLoader().discover(test_dir, pattern='hotel_*.py')
+
+
     now = time.strftime('%Y-%m-%d_%H_%M_%S_')
     filename = test_report_dir + '\\' + now + 'result.html'
     fp = open(filename, 'wb')

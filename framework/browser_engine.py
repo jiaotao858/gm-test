@@ -24,8 +24,8 @@ class BrowserEngine(object):
 
         browser = config.get('browserType', 'browserName')
         logger.info("You had select %s browser." % browser)
-        # url = config.get('testServer', 'URL')
-        # logger.info("The test server url is: %s" % url)
+        url = config.get('testServer', 'URL')
+        logger.info("The test server url is: %s" % url)
 
         if browser == "firefox":
             driver = webdriver.Firefox()

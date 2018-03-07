@@ -18,11 +18,14 @@ fp = open(HtmlFile, "wb")
 # 执行特定用例
 # suite = unittest.TestSuite()
 suit = again_execute.Suit()
-suit.addTest(HotelLogin('test_searchHotel'))
-# suite.addTest(HotelLogin('test_checkLogin'))
+suit.addTest(HotelLogin('test_search1'))
+# suite.addTest(HotelLogin('test_search1'))
+
+# test_dir = 'C:\\Users\\allonshore\\PycharmProjects\\gm-test\\testsuits\\hotel_testsuits.py'
+
 
 # 执行所有用例
-# suite = unittest.TestLoader().discover("testsuits")
+# suite = unittest.TestLoader().discover(test_dir, pattern='test*.py')
 
 
 if __name__ == '__main__':
