@@ -24,21 +24,13 @@ def new_file(test_dir):
     lists.sort(key=lambda fn: os.path.getmtime(test_dir + '\\' + fn))
     # 获取最新文件的绝对路径
     file_path = os.path.join(test_dir, lists[-1])
-    #    L=file_path.split('\\')
-    #    file_path='\\\\'.join(L)
     return file_path
 
 
 # 3.定义：发送邮件，发送最新测试报告html
 def send_email(newfile):
-    # 打开文件
     f = open(newfile, 'rb')
-    # 读取文件内容
     mail_body = f.read()
-    # 调试使用
-    #    print u'打印'
-    #    print mail_body
-    # 关闭文件
     f.close()
 
     # 发送邮箱服务器
@@ -66,9 +58,11 @@ def send_email(newfile):
     #    msg_plain = MIMEText(text,'plain', 'utf-8')
     #    msg.attach(msg_plain)
 
+    # 邮件正文
     msg_html1 = MIMEText(mail_body, 'html', 'utf-8')
     msg.attach(msg_html1)
 
+    # 附件一（测试报告）
     msg_html = MIMEText(mail_body, 'html', 'utf-8')
     msg_html["Content-Disposition"] = 'attachment; filename="TestReport.html"'
     msg.attach(msg_html)
@@ -105,11 +99,11 @@ if __name__ == '__main__':
     # 不用绝对路径会报：ImportError: Start directory is not importable: './test_case'
     # test_dir = 'D:\\system files\\workspace\\selenium\\test_project\\test_case'
     dir = os.path.dirname(os.path.abspath('.'))
-    test_dir = dir + r'\testsuits'
+    test_dir = dir + '/testsuits'
     # test_dir = r'C:\Users\allonshore\PycharmProjects\gm-test\testsuits'
     # 知道测试报告的路径
     # test_report_dir = os.path.dirname(os.path.abspath('.'))+'/test_report/'
-    test_report_dir = r'C:\Users\allonshore\PycharmProjects\gm-test\test_report'
+    test_report_dir = 'C:/Users/allonshore/PycharmProjects/gm-test/test_report'
 
     discover = unittest.defaultTestLoader.discover(test_dir, pattern='hotel_*.py')
     # suite = unittest.TestLoader().discover(test_dir, pattern='hotel_*.py')

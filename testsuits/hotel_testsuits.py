@@ -27,13 +27,13 @@ class HotelLogin(unittest.TestCase):
 
     # 查询酒店
     def test_search1(self):
-        """验证酒店查询是否正确"""
+        """验证酒店查询是否正确111"""
         indexpage = IndexPage(self.driver)
         indexpage.goto_hotellist()       # 跳转至酒店列表页
         hotellist = HotelListPage(self.driver)
         hotellist.search_hotel()
-        self.assertEqual(hotellist.search_suss(), "唐山迪士尼111")
-        hotellist.book_room()
+        self.assertEqual(hotellist.search_suss(), "唐山迪士尼")
+        # hotellist.book_room()
         # fillorder = FillOrderPage(self.driver)
         # fillorder.fill_order()
         # fillorder.pay_style(1)
@@ -43,11 +43,12 @@ class HotelLogin(unittest.TestCase):
         # gotoadmin = GoToAdmin(self.driver)
         # gotoadmin.goto_admin()
 
-    # # 查询酒店
-    # def test_search2(self):
-    #     """测试数据2"""
-    #     indexpage = IndexPage(self.driver)
-    #     indexpage.goto_hotellist()  # 跳转至酒店列表页
+    # 查询酒店
+    def test_search2(self):
+        """测试数据2222"""
+        indexpage = IndexPage(self.driver)
+        indexpage.goto_hotellist()  # 跳转至酒店列表页
+
 
 if __name__ == '__main__':
     unittest.main()
