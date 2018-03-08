@@ -6,10 +6,8 @@
 @author: taojiaoa
 @site: 
 @software: PyCharm
-@file: __init__.py
-@time: 2018/3/8 17:20
-
-这一行写关于本文的说明与解释
+@file: demo03.py
+@time: 2018/3/8 10:56
 """
 
 
