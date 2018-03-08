@@ -26,7 +26,12 @@ class HotelLogin(unittest.TestCase):
 
     # 查询酒店
     def test_searchHotel(self):
-        self.driver.find_element_by_xpath("/html/body/div[2]/div/ul/li[3]/a").click()       # 跳转至酒店页
+
+        # loginpage = LoginPage(self.driver)
+        # loginpage.common_login()
+        indexpage = IndexPage(self)
+        indexpage.goto_hotellist()
+        # self.driver.find_element_by_xpath("/html/body/div[2]/div/ul/li[3]/a").click()       # 跳转至酒店页
         searchhotel = HotelListPage(self.driver)
         searchhotel.search_hotel()
         self.assertEqual(searchhotel.search_suss(), "唐山迪士尼")

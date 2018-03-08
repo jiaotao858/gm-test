@@ -25,4 +25,7 @@ class LoginPage(BasePage):
         self.send_keys(self.pwd_box, "jt123456")
         self.click(self.entry_btn)
 
+    # 跳转至酒店列表页
+    def goto_hotellist(self):
+        self.wait(10)
 

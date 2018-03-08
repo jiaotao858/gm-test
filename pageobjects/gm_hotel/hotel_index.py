@@ -16,8 +16,11 @@ class IndexPage(BasePage):
 
     # 跳转至酒店列表页
     def goto_hotellist(self):
-        self.click("link_text=旅游线路")
-        self.sleep(10)
+        self.wait(10)
+        # self.find_element("xpath=/html/body/div[2]/div/ul/li[3]/a")
+        # self.click("link_text=旅游线路")
+        # self.f5()
+        # self.sleep(10)
 
 
 
