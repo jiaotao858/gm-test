@@ -1,11 +1,12 @@
 # coding=utf-8
-from HTMLTestRunner import HTMLTestRunner
 import os
 import time
 import unittest
-from testsuits.hotel_testsuits import HotelLogin
+
+from HTMLTestRunner import HTMLTestRunner
 from framework import again_execute
 from framework.send_email import send_email,new_file
+from testsuits.hotel_testsuits.hotel_testsuits import HotelLogin
 
 # 项目相对路径
 dir = os.path.dirname(os.path.abspath('.'))
@@ -28,24 +29,23 @@ suit = again_execute.Suit()
 suit.addTest(HotelLogin('test_search1'))
 # suite.addTest(HotelLogin('test_search1'))
 
-# 执行所有用例
-# suite = unittest.defaultTestLoader().discover(test_dir, pattern='test_*.py')
 
+# 查找所有模块下用例
 def createsuite():
     testunit=unittest.TestSuite()
-    discover=unittest.defaultTestLoader.discover(test_dir, pattern='test_*.py', top_level_dir=None)
+    discover=unittest.defaultTestLoader.discover(test_dir, pattern='*_testsuits.py', top_level_dir=None)
     print(discover)
     for test_suite in discover:
         for testsuit in test_suite:
             testunit.addTest(testsuit)
     return testunit
-# alltestnames = createsuite()
+allsuite = createsuite()
 
 if __name__ == '__main__':
     print('=====AutoTest Start======')
     runner = HTMLTestRunner(stream=fp, title="测试项目报告", description="用例测试情况", verbosity=2)
     # runner = unittest.TextTestRunner(verbosity=2)
-    runner.run(createsuite())
+    runner.run(allsuite)
     fp.close()
 
     # 2.取最新测试报告
