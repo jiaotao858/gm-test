@@ -4,6 +4,7 @@ from framework.browser_engine import BrowserEngine
 from pageobjects.gm_hotel.hotel_login import LoginPage
 from pageobjects.gm_hotel.hotel_index import IndexPage
 from pageobjects.gm_hotel.hotel_hotellist import HotelListPage
+from pageobjects.gm_hotel.hotel_order import FillOrderPage,OnlinePay,GoToAdmin
 
 class HotelLogin(unittest.TestCase):
 
@@ -25,17 +26,28 @@ class HotelLogin(unittest.TestCase):
         indexpage.goto_hotellist()
 
     # 查询酒店
-    def test_searchHotel(self):
+    def test_search1(self):
+        """验证酒店查询是否正确111"""
+        indexpage = IndexPage(self.driver)
+        indexpage.goto_hotellist()       # 跳转至酒店列表页
+        hotellist = HotelListPage(self.driver)
+        hotellist.search_hotel()
+        self.assertEqual(hotellist.search_suss(), "唐山迪士尼")
+        # hotellist.book_room()
+        # fillorder = FillOrderPage(self.driver)
+        # fillorder.fill_order()
+        # fillorder.pay_style(1)
+        # fillorder.submit_order()
+        # onlinepage = OnlinePay(self.driver)
+        # onlinepage.get_billno()
+        # gotoadmin = GoToAdmin(self.driver)
+        # gotoadmin.goto_admin()
 
-        # loginpage = LoginPage(self.driver)
-        # loginpage.common_login()
-        indexpage = IndexPage(self)
-        indexpage.goto_hotellist()
-        # self.driver.find_element_by_xpath("/html/body/div[2]/div/ul/li[3]/a").click()       # 跳转至酒店页
-        searchhotel = HotelListPage(self.driver)
-        searchhotel.search_hotel()
-        self.assertEqual(searchhotel.search_suss(), "唐山迪士尼")
-
+    # 查询酒店
+    def test_search2(self):
+        """测试数据2222"""
+        indexpage = IndexPage(self.driver)
+        indexpage.goto_hotellist()  # 跳转至酒店列表页
 
 if __name__ == '__main__':
     unittest.main()
