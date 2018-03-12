@@ -49,7 +49,6 @@ class HotelLogin(unittest.TestCase):
         indexpage = IndexPage(self.driver)
         indexpage.goto_hotellist()  # 跳转至酒店列表页
 
-
 if __name__ == '__main__':
     unittest.main()
 
