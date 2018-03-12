@@ -3,7 +3,7 @@ from HTMLTestRunner import HTMLTestRunner
 import os
 import time
 import unittest
-from testsuits.hotel_testsuits import HotelLogin
+from testsuits.test_testsuits import HotelLogin
 from framework import again_execute
 from framework.send_email import send_email,new_file
 
